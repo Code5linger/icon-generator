@@ -1,5 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import { Input } from "~/component/input";
+import { FormGroup } from "./FormGroup";
 
 const GeneratePage: NextPage = () => {
   return (
@@ -10,10 +12,12 @@ const GeneratePage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <form className="flex flex-row">
-          <label>Prompt</label>
-          <input type="text"></input>
+      <main className="flex min-h-screen flex-col items-center justify-center ">
+        <form className="flex flex-col gap-4">
+          <FormGroup>
+            <label>Prompt</label>
+            <Input></Input>
+          </FormGroup>
           <button className="after: rounded bg-blue-400 px-4 py-2 hover:bg-blue-500">
             Submit
           </button>
