@@ -2,8 +2,36 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { Input } from "~/component/input";
 import { FormGroup } from "./FormGroup";
+import { useState } from "react";
+import { api } from "~/utils/api";
 
 const GeneratePage: NextPage = () => {
+  const [form, setForm] = useState({
+    prompt: "",
+  });
+
+  const generateIcon = api.generate.generateIcon.useMutation({
+    onSuccess(data) {
+      console.log("mutation finished", data);
+    },
+  });
+
+  function handleFormSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    generateIcon.mutate({
+      prompt: form.prompt,
+    });
+  }
+
+  function updateForm(key: string) {
+    return function (event: React.ChangeEvent<HTMLInputElement>) {
+      setForm((prev) => ({
+        ...prev,
+        [key]: event.target.value,
+      }));
+    };
+  }
+
   return (
     <>
       <Head>
@@ -13,10 +41,10 @@ const GeneratePage: NextPage = () => {
       </Head>
 
       <main className="flex min-h-screen flex-col items-center justify-center ">
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
           <FormGroup>
             <label>Prompt</label>
-            <Input></Input>
+            <Input value={form.prompt} onChange={updateForm("prompt")}></Input>
           </FormGroup>
           <button className="after: rounded bg-blue-400 px-4 py-2 hover:bg-blue-500">
             Submit
