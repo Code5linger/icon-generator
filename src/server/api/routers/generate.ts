@@ -1,23 +1,26 @@
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const generateRouter = createTRPCRouter({
-  generateIcon: publicProcedure
+  generateIcon: protectedProcedure
     .input(
       z.object({
         prompt: z.string(),
       })
     )
-    .mutation(({ ctx, input }) => {
-      console.log("We are here", input.prompt);
+    .mutation(async ({ ctx, input }) => {
+      const results = await ctx.prisma.user.updateMany({
+        where: {
+          id: ctx.session.user.id,
+          credite
+        },
+        data: {},
+      });
+
+      console.log(results);
       return {
         message: "Success",
-        copa: "samsu",
       };
     }),
 });
