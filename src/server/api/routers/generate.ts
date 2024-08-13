@@ -4,19 +4,17 @@ import { z } from "zod";
 import OpenAI from "openai";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { env } from "process";
-// API --
+import { env } from "~/env.mjs";
+
 const openai = new OpenAI({
-  // apiKey: process.env.OPENAI_API_KEY,
-  apiKey: env
+  apiKey: env.DALLE_API_KEY,
 });
 
-const chatCompletion = await openai.chat.completions.create({
-  messages: [{ role: "user", content: "Say this is a test" }],
-  model: "gpt-4o-mini",
-});
+// DALL-E Api
 
-// API --
+// image_url = response.data[0].url;
+
+// DALL-E Api
 
 export const generateRouter = createTRPCRouter({
   generateIcon: protectedProcedure
@@ -47,8 +45,25 @@ export const generateRouter = createTRPCRouter({
         });
       }
 
+      // const chatCompletion = await openai.images.generate({
+      //   model: "dall-e-3",
+      //   prompt: input.prompt,
+      //   n: 1,
+      //   size: "1024x1024",
+      // });
+
+      const response = await openai.images.generate({
+        model: "dall-e-3",
+        // prompt: input.prompt,
+        prompt: "a white siamese cat",
+        n: 1,
+        size: "1024x1024",
+      });
+
+      const url = response.data[0]?.url;
+
       return {
-        message: "Success",
+        imageUrl: url,
       };
     }),
 });

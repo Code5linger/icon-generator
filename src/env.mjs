@@ -18,6 +18,7 @@ const server = z.object({
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
   DALLE_API_KEY: z.string(),
+  LIME_WIRE_API_KEY: z.string(),
 });
 
 const client = z.object({
@@ -32,11 +33,9 @@ const processEnv = {
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   DALLE_API_KEY: process.env.DALLE_API_KEY,
+  LIME_WIRE_API_KEY: process.env.LIME_WIRE_API_KEY,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
-
-// Don't touch the part below
-// --------------------------
 
 const merged = server.merge(client);
 

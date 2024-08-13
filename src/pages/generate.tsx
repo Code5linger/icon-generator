@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { type NextPage } from "next";
 import Head from "next/head";
 import { Input } from "~/component/input";
@@ -12,9 +13,15 @@ const GeneratePage: NextPage = () => {
     prompt: "",
   });
 
+  const [imageUrl, setImageUrl] = useState("");
+
+  console.log(imageUrl);
+
   const generateIcon = api.generate.generateIcon.useMutation({
     onSuccess(data) {
-      console.log("mutation finished", data);
+      console.log("mutation finished", data.imageUrl);
+      if (!data.imageUrl) return;
+      setImageUrl(data.imageUrl);
     },
   });
 
@@ -65,9 +72,7 @@ const GeneratePage: NextPage = () => {
             Log Out
           </Button>
         )}
-
         {session.data?.user.name}
-
         <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
           <FormGroup>
             <label>Prompt</label>
@@ -77,6 +82,8 @@ const GeneratePage: NextPage = () => {
             Submit
           </Button>
         </form>
+
+        <img src="{imageUrl}" alt="dall-e image" />
       </main>
     </>
   );
